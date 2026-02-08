@@ -48,8 +48,8 @@ Bir HIIT (High-Intensity Interval Training) ve egzersiz aralık antrenmanı uygu
 1. Projeyi klonla
 
    ```bash
-   git clone <repository-url>
-   cd my_app
+   https://github.com/debugistan/stopwatch_app.git
+   cd stopwatch_app
    ```
 
 2. Bağımlılıkları yükle
