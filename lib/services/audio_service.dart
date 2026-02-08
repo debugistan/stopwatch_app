@@ -10,10 +10,11 @@ class AudioService {
     'com.example.my_app/beep',
   );
 
-  late AudioPlayer _audioPlayer;
+  AudioPlayer? _audioPlayer;
 
   AudioService() {
-    _audioPlayer = AudioPlayer();
+    // Do not eagerly create AudioPlayer to avoid platform channel calls during tests.
+    _audioPlayer = null;
   }
 
   /// Plays a short beep (100ms)
@@ -26,7 +27,8 @@ class AudioService {
         // Web: use WAV generation with data URL
         final audio = WAVGenerator.generateSineWave(750, 120);
         final dataUrl = WAVGenerator.wavToDataUrl(audio);
-        await _audioPlayer.play(
+        _audioPlayer ??= AudioPlayer();
+        await _audioPlayer!.play(
           UrlSource(dataUrl),
           mode: PlayerMode.lowLatency,
         );
@@ -46,7 +48,8 @@ class AudioService {
         // Web: use WAV generation with melody and data URL
         final audio = WAVGenerator.generateMelodyWAV([800, 600], [150, 150]);
         final dataUrl = WAVGenerator.wavToDataUrl(audio);
-        await _audioPlayer.play(
+        _audioPlayer ??= AudioPlayer();
+        await _audioPlayer!.play(
           UrlSource(dataUrl),
           mode: PlayerMode.lowLatency,
         );
@@ -58,6 +61,6 @@ class AudioService {
 
   /// Disposes audio player resources
   void dispose() {
-    _audioPlayer.dispose();
+    _audioPlayer?.dispose();
   }
 }
